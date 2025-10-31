@@ -30,18 +30,11 @@ get_template_part('includes/breadcrums');
                 <div class="card director-card text-center">
 
                     <?php 
-                        if (has_post_thumbnail()):
-                            the_post_thumbnail('large', array(
-
-                                'class'  =>  'card-img-top img-fluid',
-
-                            ))
-                        ?>
-                        <?php else:?>
-
-                    <img src="<?php echo get_template_directory_uri() . '/images/no-image-thumbnail.jpg';?>  " class="card-img-top img-fluid" alt="Chairman">
-
-                    <?php endif;?>
+                        the_post_thumbnail('thumbnail');
+                        // the_post_thumbnail('medium');
+                        // the_post_thumbnail('large', array('class' => 'img-fluid rounded-circle'));
+                        // the_post_thumbnail('full');
+                    ?>
 
                     <div class="card-body">
 
@@ -75,6 +68,21 @@ get_template_part('includes/breadcrums');
            
 
 
+        </div>
+
+
+            
+
+        <div class="row">
+
+        <?php 
+                while( $board_directors->have_posts()):  $board_directors->the_post();
+            ?>
+            <div class="col-md-3">
+                <?php the_post_thumbnail('bd-photo');?>
+            </div>
+            <?php endwhile; wp_reset_postdata();?>
+          
         </div>
     </div>
 

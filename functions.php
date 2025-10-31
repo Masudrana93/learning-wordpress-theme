@@ -7,8 +7,11 @@ function after_setup_theme_pharma(){
 
     //Add theme support
     add_theme_support('post-thumbnails');
+    add_image_size('bd-photo', 400, 400, true);
+    add_image_size('fish-photo', 400, 300, true);
 }
 add_action('after_setup_theme', 'after_setup_theme_pharma');
+
 
 
 //pharma-css-and-js
@@ -202,6 +205,9 @@ require_once get_template_directory() . '/includes/ticker-post-type-pharma.php';
 // Special Products  part
 require_once get_template_directory() . '/includes/special-products-post-type-pharma.php';
 
+// fish post type
+require_once get_template_directory() . '/includes/fish-post-type.php';
+
 
 // About Us Single page Register Menus
 function pharma_register_menus() {
@@ -210,3 +216,6 @@ function pharma_register_menus() {
     ));
 }
 add_action('init', 'pharma_register_menus');
+
+
+
