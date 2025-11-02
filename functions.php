@@ -15,6 +15,7 @@ function after_setup_theme_pharma(): void{
     add_image_size('photo-200X150', 200, 150, true);
     add_image_size('photo-600X350', 600, 350, true);
     add_image_size('photo-80X80', 80, 80, true);
+    add_image_size('photo-600X300', 600, 300, true);
 }
 add_action('after_setup_theme', 'after_setup_theme_pharma');
 

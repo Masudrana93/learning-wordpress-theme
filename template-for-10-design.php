@@ -15,11 +15,11 @@ get_template_part('includes/breadcrums');
     <h3 class="mb-4 border-bottom pb-2 text-primary">1. Classic News Grid</h3>
     <div class="row g-4">
         <?php
-        $news_design = new Wp_Query(array(
+        $news_design = new WP_Query(array(
 
-            'post_type' => 'fish',
-            'posts_per_page' => 4,
-            'order' => 'DESC',
+            'post_type'         => 'fish',
+            'posts_per_page'    => 4,
+            'order'             => 'DESC',
         ));
         while ($news_design->have_posts()):
             $news_design->the_post();
@@ -120,8 +120,8 @@ get_template_part('includes/breadcrums');
                 the_post_thumbnail('photo-800X400', array('class' => 'card-img img-fluid'));
 
             } else { ?>
-                <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg' ?>" class="card-img img-fluid"
-                    alt="">
+                <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg' ?>"
+                    class="card-img img-fluid" alt="">
 
             <?php }
             ?>
@@ -245,18 +245,19 @@ get_template_part('includes/breadcrums');
 
 
 
-                <?php 
-                    if ( has_post_thumbnail() ) {
+                    <?php
+                    if (has_post_thumbnail()) {
 
                         the_post_thumbnail('photo-600X350', array('class' => 'card-img img-fluid'));
 
-                    } else{?>
-                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-600X350.jpg'?>" class="card-img img-fluid" alt="">
+                    } else { ?>
+                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-600X350.jpg' ?>"
+                            class="card-img img-fluid" alt="">
 
-                <?php }
-                ?>
+                    <?php }
+                    ?>
 
-                  
+
 
                     <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
                         <h4> <?php the_title(); ?> </h4>
@@ -290,16 +291,17 @@ get_template_part('includes/breadcrums');
             <div class="col-md-8">
 
 
-            <?php 
-                if ( has_post_thumbnail() ) {
+                <?php
+                if (has_post_thumbnail()) {
 
                     the_post_thumbnail('photo-800X400', array('class' => 'img-fluid rounded mb-3'));
 
-                }else{?>
-                    <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg'?>" class="img-fluid rounded mb-3" alt="">
+                } else { ?>
+                    <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg' ?>"
+                        class="img-fluid rounded mb-3" alt="">
 
-              <?php  }
-            ?>
+                <?php }
+                ?>
 
                 <h4><?php the_title(); ?></h4>
                 <p class="text-muted small">Main story details or summary text goes here...</p>
@@ -324,17 +326,18 @@ get_template_part('includes/breadcrums');
                     <li class="list-group-item d-flex align-items-center">
 
 
-                    <?php 
-                        if ( has_post_thumbnail() ){
+                        <?php
+                        if (has_post_thumbnail()) {
                             the_post_thumbnail('photo-80X80', array('class' => 'me-2 rounded'));
 
-                        } else{?>
-                            <img src="<?php echo get_template_directory_uri() . '/images/no-image-80X80.jpg'?>" class="me-2 rounded" alt="">
-                    <?php }
-                    ?>
+                        } else { ?>
+                            <img src="<?php echo get_template_directory_uri() . '/images/no-image-80X80.jpg' ?>"
+                                class="me-2 rounded" alt="">
+                        <?php }
+                        ?>
 
 
-                        
+
 
                         <span><?php the_title(); ?></span>
                     </li>
@@ -350,42 +353,84 @@ get_template_part('includes/breadcrums');
 <!-- ===================================== -->
 <section class="container my-5">
     <h3 class="mb-4 border-bottom pb-2 text-primary">7. Carousel Headlines</h3>
-    <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner rounded">
 
+    <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
+
+        <!-- Indicators -->
+        <div class="carousel-indicators">
             <?php
-                $news_design = new Wp_Query(array(
-                    'post_type' => 'fish',
-                    'post_per_page' => -1,
-                    'offset' => 10,
-                    'order' => 'DESC',
-                ));
-                while($news_design->have_posts()): $news_design->the_post();
+            $news_design = new WP_Query(array(
+                'post_type'      => 'fish',
+                'posts_per_page' => 3,
+                'offset'         => 10,
+                'order'          => 'DESC',
+            ));
+
+            $indicator_index = 0;
+            while ($news_design->have_posts()):
+                $news_design->the_post();
+            ?>
+                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="<?php echo $indicator_index; ?>"
+                    class="<?php echo ($indicator_index == 0) ? 'active' : ''; ?>"
+                    aria-current="<?php echo ($indicator_index == 0) ? 'true' : 'false'; ?>"
+                    aria-label="Slide <?php echo $indicator_index + 1; ?>"></button>
+            <?php
+                $indicator_index++;
+            endwhile;
+            wp_reset_postdata();
+            ?>
+        </div>
+
+        <!-- Inner slides -->
+        <div class="carousel-inner rounded">
+            <?php
+            $news_design = new WP_Query(array(
+                'post_type'      => 'fish',
+                'posts_per_page' => 3,
+                'offset'         => 10,
+                'order'          => 'DESC',
+            ));
+
+            $active = 0;
+            while ($news_design->have_posts()):
+                $news_design->the_post();
             ?>
 
-                            
-            <div class="carousel-item active">
-
-
-                <?php 
-                    if ( has_post_thumbnail() ){
+                <div class="carousel-item <?php echo ($active == 0) ? 'active' : ''; ?>">
+                    <?php
+                    if (has_post_thumbnail()) {
                         the_post_thumbnail('photo-800X400', array('class' => 'd-block w-100 img-fluid'));
-                    }else{?>
-                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg'?>" class="d-block w-100 img-fluid" alt="">
-                <?php }
-                ?>
+                    } else { ?>
+                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg'; ?>"
+                            class="d-block w-100 img-fluid" alt="">
+                    <?php } ?>
 
-
-                <div class="carousel-caption bg-dark bg-opacity-75 rounded">
-                    <h5><?php the_title();?></h5>
+                    <div class="carousel-caption bg-dark bg-opacity-75 rounded">
+                        <h5><?php the_title(); ?></h5>
+                    </div>
                 </div>
-            </div>
-            <?php endwhile; wp_reset_postdata();?>
 
-            
+            <?php
+                $active++;
+            endwhile;
+            wp_reset_postdata();
+            ?>
         </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
     </div>
 </section>
+
 
 <!-- ===================================== -->
 <!-- 8. Two Column Masonry Style -->
@@ -393,22 +438,41 @@ get_template_part('includes/breadcrums');
 <section class="container my-5">
     <h3 class="mb-4 border-bottom pb-2 text-danger">8. Masonry Grid</h3>
     <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://picsum.photos/600/300?random=81" class="card-img-top" alt="">
-                <div class="card-body">
-                    <h5>Masonry Post 1</h5>
+
+        <?php
+        $news_design = new Wp_Query(array(
+            'post_type' => 'fish',
+            'posts_per_page' => 2,
+            'offset' => 14,
+            'order' => 'DESC',
+        ));
+        while ($news_design->have_posts()):
+            $news_design->the_post();
+            ?>
+
+            <div class="col">
+                <div class="card h-100">
+
+                    <?php
+                    if (has_post_thumbnail()) {
+                        the_post_thumbnail('photo-600X300', array('class' => 'card-img-top img-fluid'));
+                    } else { ?>
+                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-600X300.jpg'; ?>"
+                            class="card-img-top img-fluid" alt="">
+                    <?php }
+                    ?>
+
+
+                    <div class="card-body">
+                        <h5> <?php the_title(); ?> </h5>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://picsum.photos/600/500?random=82" class="card-img-top" alt="">
-                <div class="card-body">
-                    <h5>Masonry Post 2</h5>
-                </div>
-            </div>
-        </div>
+        <?php endwhile;
+        wp_reset_postdata(); ?>
+
+
+
     </div>
 </section>
 
@@ -418,14 +482,26 @@ get_template_part('includes/breadcrums');
 <section class="container my-5">
     <h3 class="mb-4 border-bottom pb-2 text-success">9. Timeline Layout</h3>
     <ul class="list-unstyled">
-        <li class="mb-4 border-start border-3 ps-3">
-            <h6>Nov 1, 2025</h6>
-            <h5>Timeline Headline One</h5>
-        </li>
-        <li class="mb-4 border-start border-3 ps-3">
-            <h6>Oct 30, 2025</h6>
-            <h5>Timeline Headline Two</h5>
-        </li>
+
+        <?php
+        $news_design = new Wp_Query(array(
+            'post_type' => 'fish',
+            'posts_per_page' => 2,
+            'offset' => 12,
+            'order' => 'DESC',
+        ));
+        while ($news_design->have_posts()):
+            $news_design->the_post();
+            ?>
+
+
+            <li class="mb-4 border-start border-3 ps-3">
+                <h6>Nov 1, 2025</h6>
+                <h5><?php the_title(); ?></h5>
+            </li>
+        <?php endwhile;
+        wp_reset_postdata(); ?>
+
     </ul>
 </section>
 
@@ -435,9 +511,22 @@ get_template_part('includes/breadcrums');
 <section class="container my-5">
     <h3 class="mb-4 border-bottom pb-2 text-dark">10. Minimal Titles</h3>
     <ul class="list-unstyled">
-        <li class="border-bottom py-2"><a href="#" class="text-decoration-none">Simple Post Title One</a></li>
-        <li class="border-bottom py-2"><a href="#" class="text-decoration-none">Simple Post Title Two</a></li>
-        <li class="border-bottom py-2"><a href="#" class="text-decoration-none">Simple Post Title Three</a></li>
+
+
+        <?php
+        $news_design = new Wp_Query(array(
+            'post_type' => 'fish',
+            'posts_per_page' => 3,
+            'offset' => 9,
+            'order' => 'DESC',
+        ));
+        while ($news_design->have_posts()):
+            $news_design->the_post();
+            ?>
+            <li class="border-bottom py-2"><a href="#" class="text-decoration-none"><?php the_title(); ?></a></li>
+        <?php endwhile;
+        wp_reset_postdata(); ?>
+
     </ul>
 </section>
 
