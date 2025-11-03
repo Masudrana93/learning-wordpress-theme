@@ -67,9 +67,7 @@ get_template_part('includes/breadcrums');
         while ($news_design->have_posts()):
             $news_design->the_post();
             ?>
-            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-
-
+            <a href="<?php the_permalink();?>" class="list-group-item list-group-item-action d-flex align-items-center">
 
                 <?php
                 if (has_post_thumbnail()) {
@@ -85,8 +83,23 @@ get_template_part('includes/breadcrums');
 
 
                 <div>
-                    <h5> <?php the_title(); ?> </h5>
-                    <p class="mb-1 small text-muted">Quick summary or short description here...</p>
+                    <h5> 
+                        <?php 
+                        $my_title = get_the_title(); 
+                        $trim_title = wp_trim_words($my_title, 3, '...');
+                        echo $trim_title;
+                        ?> 
+                    </h5>
+
+                    <p class="mb-1 small text-muted">
+
+                        <?php 
+                        $my_content = get_the_content();
+                        $trim_words = wp_trim_words($my_content, 5, '...');
+                        echo $trim_words;
+                        ?>
+
+                    </p>
                 </div>
             </a>
         <?php endwhile;
@@ -483,24 +496,37 @@ get_template_part('includes/breadcrums');
     <h3 class="mb-4 border-bottom pb-2 text-success">9. Timeline Layout</h3>
     <ul class="list-unstyled">
 
+
+
         <?php
-        $news_design = new Wp_Query(array(
+        $timeline_news_sections = get_posts(array(
             'post_type' => 'fish',
             'posts_per_page' => 2,
             'offset' => 12,
             'order' => 'DESC',
+            'fields'  => 'ids',
+            'no_found_rows' => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
         ));
-        while ($news_design->have_posts()):
-            $news_design->the_post();
-            ?>
-
-
+        if ($timeline_news_sections){
+            foreach($timeline_news_sections as $timeline_news_section) { ?>
+       
             <li class="mb-4 border-start border-3 ps-3">
-                <h6>Nov 1, 2025</h6>
-                <h5><?php the_title(); ?></h5>
+
+                <h6> <?php echo get_the_date('M j, Y', $timeline_news_section);?> </h6>
+
+                <h5> <a href="<?php echo esc_url(get_permalink($timeline_news_section));?>" class="text-decoration-none"> 
+                    <?php echo esc_html(get_the_title($timeline_news_section)); ?> 
+                </a> </h5>
             </li>
-        <?php endwhile;
-        wp_reset_postdata(); ?>
+
+        <?php  } 
+        } else {?>
+
+            <li>No posts found.</li>
+
+        <?php } ?>
 
     </ul>
 </section>
