@@ -69,9 +69,11 @@ get_header();
 
 
     <?php
+        $current_id = get_the_ID();  // aki post jeno 2 bar na dekhai
          $related_post = new WP_Query(array(
             'post_type' => 'fish',
             'posts_per_page' => 3,
+            'post__not_in' => array($current_id),
             'order' => 'DESC',
         ));
         while($related_post->have_posts()): $related_post->the_post();
