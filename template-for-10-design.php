@@ -5,6 +5,7 @@
 get_header();
 
 get_template_part('includes/breadcrums');
+$cpt_name = 'fish';
 ?>
 
 
@@ -17,9 +18,9 @@ get_template_part('includes/breadcrums');
         <?php
         $news_design = new WP_Query(array(
 
-            'post_type'         => 'fish',
-            'posts_per_page'    => 4,
-            'order'             => 'DESC',
+            'post_type' => $cpt_name,
+            'posts_per_page' => 4,
+            'order' => 'DESC',
         ));
         while ($news_design->have_posts()):
             $news_design->the_post();
@@ -29,16 +30,20 @@ get_template_part('includes/breadcrums');
                 <div class="card h-100 shadow-sm">
 
                     <?php
-                    if (has_post_thumbnail()) {
-                        the_post_thumbnail('photo-400X250', array('class' => 'card-img-top img-fluid'));
-                    } else { ?>
-                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-400X250.jpg'; ?>"
-                            class="card-img-top img-fluid" alt="">
+                    if (has_post_thumbnail()) { ?>
+                        <a href="<?php the_permalink(); ?>">
+                            <?php the_post_thumbnail('photo-400X250', array('class' => 'card-img-top img-fluid')); ?> </a>
+                    <?php } else { ?>
+                        <a href="<?php the_permalink(); ?>"> <img
+                                src="<?php echo get_template_directory_uri() . '/images/no-image-400X250.jpg'; ?>"
+                                class="card-img-top img-fluid" alt=""> </a>
                     <?php } ?>
 
                     <div class="card-body">
                         <h5 class="card-title"><?php the_title(); ?></h5>
-                        <p class="card-text text-muted small">Short excerpt of the post goes here...</p>
+                        <p class="card-text text-muted small"> <a href="<?php the_permalink(); ?>"
+                                class="text-decoration-none text-secondary">
+                                <?php echo wp_trim_words(get_the_excerpt(), 10, '...'); ?> </a> </p>
                         <a href="<?php the_permalink(); ?>" class="btn btn-sm btn-outline-primary">Read More</a>
                     </div>
                 </div>
@@ -59,7 +64,7 @@ get_template_part('includes/breadcrums');
 
         <?php
         $news_design = new Wp_Query(array(
-            'post_type' => 'fish',
+            'post_type' => $cpt_name,
             'posts_per_page' => 2,
             'offset' => 4,
             'order' => 'DESC',
@@ -67,14 +72,15 @@ get_template_part('includes/breadcrums');
         while ($news_design->have_posts()):
             $news_design->the_post();
             ?>
-            <a href="<?php the_permalink();?>" class="list-group-item list-group-item-action d-flex align-items-center">
+            <a href="<?php the_permalink(); ?>" class="list-group-item list-group-item-action d-flex align-items-center">
 
                 <?php
                 if (has_post_thumbnail()) {
                     the_post_thumbnail('photo-100X100', array('class' => 'me-3 rounded img-fluid'));
                 } else { ?>
-                    <img src="<?php echo get_template_directory_uri() . '/images/no-image100X100.jpg' ?>" class="me-3 rounded"
-                        alt="">
+                    <a href="<?php the_permalink(); ?>"> <img
+                            src="<?php echo get_template_directory_uri() . '/images/no-image100X100.jpg' ?>"
+                            class="me-3 rounded" alt=""> </a>
 
                 <?php } ?>
 
@@ -83,17 +89,17 @@ get_template_part('includes/breadcrums');
 
 
                 <div>
-                    <h5> 
-                        <?php 
-                        $my_title = get_the_title(); 
+                    <h5>
+                        <?php
+                        $my_title = get_the_title();
                         $trim_title = wp_trim_words($my_title, 3, '...');
                         echo $trim_title;
-                        ?> 
+                        ?>
                     </h5>
 
                     <p class="mb-1 small text-muted">
 
-                        <?php 
+                        <?php
                         $my_content = get_the_content();
                         $trim_words = wp_trim_words($my_content, 5, '...');
                         echo $trim_words;
@@ -116,7 +122,7 @@ get_template_part('includes/breadcrums');
 
     <?php
     $news_design = new Wp_Query(array(
-        'post_type' => 'fish',
+        'post_type' => $cpt_name,
         'posts_per_page' => 1,
         'offset' => 6,
         'order' => 'DESC',
@@ -125,27 +131,26 @@ get_template_part('includes/breadcrums');
         $news_design->the_post();
         ?>
 
-        <div class="card bg-dark text-white mb-4">
+        <div class="card bg-dark text-white mb-4 position-relative">
 
+            <a href="<?php the_permalink(); ?>" class="stretched-link">
 
-            <?php
-            if (has_post_thumbnail()) {
-                the_post_thumbnail('photo-800X400', array('class' => 'card-img img-fluid'));
+                <?php
+                if (has_post_thumbnail()) {
+                    the_post_thumbnail('photo-800X400', array('class' => 'card-img img-fluid'));
 
-            } else { ?>
-                <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg' ?>"
-                    class="card-img img-fluid" alt="">
+                } else { ?>
+                    <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg' ?>"
+                        class="card-img img-fluid" alt="">
 
-            <?php }
-            ?>
+                <?php }
+                ?>
 
-            <?php ?>
+                <div class="card-img-overlay d-flex flex-column justify-content-end">
+                    <h3 class="bg-dark bg-opacity-75 p-2 rounded"> <?php the_title(); ?> </h3>
+                </div>
+            </a>
 
-
-
-            <div class="card-img-overlay d-flex flex-column justify-content-end">
-                <h3 class="bg-dark bg-opacity-75 p-2 rounded"> <?php the_title(); ?> </h3>
-            </div>
         </div>
     <?php endwhile;
     wp_reset_postdata(); ?>
@@ -154,7 +159,7 @@ get_template_part('includes/breadcrums');
 
         <?php
         $news_design = new Wp_Query(array(
-            'post_type' => 'fish',
+            'post_type' => $cpt_name,
             'posts_per_page' => 3,
             'offset' => 7,
             'order' => 'DESC',
@@ -164,25 +169,27 @@ get_template_part('includes/breadcrums');
             ?>
 
             <div class="col-md-4">
-                <div class="card h-100">
+                <div class="card h-100 position-relative">
+
+                    <a href="<?php the_permalink(); ?>" class="text-decoration-none stretched-link">
+                        <?php
+                        if (has_post_thumbnail()) {
+
+                            the_post_thumbnail('photo-400X250', array('class' => 'card-img-top img-fluid'));
+
+                        } else { ?>
+                            <img src="<?php echo get_template_directory_uri() . '/images/no-image-400X250.jpg' ?>"
+                                class="card-img-top img-fluid" alt="">
+
+                        <?php }
+                        ?>
 
 
-                    <?php
-                    if (has_post_thumbnail()) {
+                        <div class="card-body">
+                            <h6><?php the_title(); ?></h6>
+                        </div>
 
-                        the_post_thumbnail('photo-400X250', array('class' => 'card-img-top img-fluid'));
-
-                    } else { ?>
-                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-400X250.jpg' ?>"
-                            class="card-img-top img-fluid" alt="">
-
-                    <?php }
-                    ?>
-
-
-                    <div class="card-body">
-                        <h6><?php the_title(); ?></h6>
-                    </div>
+                    </a>
                 </div>
             </div>
         <?php endwhile;
@@ -200,8 +207,8 @@ get_template_part('includes/breadcrums');
 
     <?php
     $news_design = new Wp_Query(array(
-        'post_type' => 'fish',
-        'posts_per_page' => 2,
+        'post_type' => $cpt_name,
+        'posts_per_page' => 3,
         'offset' => 10,
         'order' => 'DESC',
     ));
@@ -224,10 +231,11 @@ get_template_part('includes/breadcrums');
             ?>
 
             <div>
-                <h5><?php the_title(); ?></h5>
+                <h5><a href="<?php the_permalink(); ?>" class="text-decoration-none"> <?php the_title(); ?> </a></h5>
                 <p class="text-muted small">Brief summary for the news article...</p>
                 <a href="<?php the_permalink(); ?>" class="btn btn-outline-warning btn-sm">Read More</a>
             </div>
+
         </div>
     <?php endwhile;
     wp_reset_postdata(); ?>
@@ -245,7 +253,7 @@ get_template_part('includes/breadcrums');
 
         <?php
         $news_design = new Wp_Query(array(
-            'post_type' => 'fish',
+            'post_type' => $cpt_name,
             'posts_per_page' => 2,
             'offset' => 12,
             'order' => 'DESC',
@@ -254,27 +262,30 @@ get_template_part('includes/breadcrums');
             $news_design->the_post();
             ?>
             <div class="col-md-6">
-                <div class="card text-white">
+                <div class="card text-white position-relative">
+
+                    <a href="<?php the_permalink(); ?>" class="text-decoration-none stretched-link">
+
+                        <?php
+                        if (has_post_thumbnail()) {
+
+                            the_post_thumbnail('photo-600X350', array('class' => 'card-img img-fluid'));
+
+                        } else { ?>
+                            <img src="<?php echo get_template_directory_uri() . '/images/no-image-600X350.jpg' ?>"
+                                class="card-img img-fluid" alt="">
+
+                        <?php }
+                        ?>
 
 
 
-                    <?php
-                    if (has_post_thumbnail()) {
+                        <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
+                            <h4> <?php the_title(); ?> </h4>
+                        </div>
 
-                        the_post_thumbnail('photo-600X350', array('class' => 'card-img img-fluid'));
+                    </a>
 
-                    } else { ?>
-                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-600X350.jpg' ?>"
-                            class="card-img img-fluid" alt="">
-
-                    <?php }
-                    ?>
-
-
-
-                    <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
-                        <h4> <?php the_title(); ?> </h4>
-                    </div>
                 </div>
             </div>
         <?php endwhile;
@@ -293,7 +304,7 @@ get_template_part('includes/breadcrums');
 
         <?php
         $news_design = new Wp_Query(array(
-            'post_type' => 'fish',
+            'post_type' => $cpt_name,
             'posts_per_page' => 1,
             'offset' => 14,
             'order' => 'DESC',
@@ -303,21 +314,33 @@ get_template_part('includes/breadcrums');
             ?>
             <div class="col-md-8">
 
+                <a href="<?php the_permalink(); ?>">
+                    <?php
+                    if (has_post_thumbnail()) {
 
-                <?php
-                if (has_post_thumbnail()) {
+                        the_post_thumbnail('photo-800X400', array('class' => 'img-fluid rounded mb-3'));
 
-                    the_post_thumbnail('photo-800X400', array('class' => 'img-fluid rounded mb-3'));
+                    } else { ?>
+                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg' ?>"
+                            class="img-fluid rounded mb-3" alt="">
 
-                } else { ?>
-                    <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg' ?>"
-                        class="img-fluid rounded mb-3" alt="">
+                    <?php }
+                    ?>
+                </a>
 
-                <?php }
-                ?>
+                <h4>
+                    <a href="<?php the_permalink(); ?>" class="text-decoration-none">
+                        <?php
+                        the_title();
+                        ?>
+                    </a>
+                </h4>
+                <p class="text-muted small">
+                    <?php
+                    echo wp_trim_words(get_the_excerpt(), 10, '...');
+                    ?>
+                </p>
 
-                <h4><?php the_title(); ?></h4>
-                <p class="text-muted small">Main story details or summary text goes here...</p>
             </div>
         <?php endwhile;
         wp_reset_postdata(); ?>
@@ -328,31 +351,32 @@ get_template_part('includes/breadcrums');
             <ul class="list-group">
                 <?php
                 $news_design = new Wp_Query(array(
-                    'post_type' => 'fish',
+                    'post_type' => $cpt_name,
                     'posts_per_page' => 4,
-                    'offset' => 15,
+                    'offset' => 13,
                     'order' => 'DESC',
                 ));
                 while ($news_design->have_posts()):
                     $news_design->the_post();
                     ?>
-                    <li class="list-group-item d-flex align-items-center">
 
 
-                        <?php
-                        if (has_post_thumbnail()) {
-                            the_post_thumbnail('photo-80X80', array('class' => 'me-2 rounded'));
+                    <li class="list-group-item d-flex align-items-center position-relative">
 
-                        } else { ?>
-                            <img src="<?php echo get_template_directory_uri() . '/images/no-image-80X80.jpg' ?>"
-                                class="me-2 rounded" alt="">
-                        <?php }
-                        ?>
+                        <a href="<?php the_permalink(); ?>" class="text-decoration-none stretched-link">
+                            <?php
+                            if (has_post_thumbnail()) {
+                                the_post_thumbnail('photo-80X80', array('class' => 'me-2 rounded'));
 
+                            } else { ?>
+                                <img src="<?php echo get_template_directory_uri() . '/images/no-image-80X80.jpg' ?>"
+                                    class="me-2 rounded" alt="">
+                            <?php }
+                            ?>
 
+                            <span><?php the_title(); ?></span>
 
-
-                        <span><?php the_title(); ?></span>
+                        </a>
                     </li>
                 <?php endwhile;
                 wp_reset_postdata(); ?>
@@ -373,21 +397,21 @@ get_template_part('includes/breadcrums');
         <div class="carousel-indicators">
             <?php
             $news_design = new WP_Query(array(
-                'post_type'      => 'fish',
+                'post_type' => $cpt_name,
                 'posts_per_page' => 3,
-                'offset'         => 10,
-                'order'          => 'DESC',
+                'offset' => 10,
+                'order' => 'DESC',
             ));
 
             $indicator_index = 0;
             while ($news_design->have_posts()):
                 $news_design->the_post();
-            ?>
+                ?>
                 <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="<?php echo $indicator_index; ?>"
                     class="<?php echo ($indicator_index == 0) ? 'active' : ''; ?>"
                     aria-current="<?php echo ($indicator_index == 0) ? 'true' : 'false'; ?>"
                     aria-label="Slide <?php echo $indicator_index + 1; ?>"></button>
-            <?php
+                <?php
                 $indicator_index++;
             endwhile;
             wp_reset_postdata();
@@ -398,32 +422,37 @@ get_template_part('includes/breadcrums');
         <div class="carousel-inner rounded">
             <?php
             $news_design = new WP_Query(array(
-                'post_type'      => 'fish',
+                'post_type' => $cpt_name,
                 'posts_per_page' => 3,
-                'offset'         => 10,
-                'order'          => 'DESC',
+                'offset' => 10,
+                'order' => 'DESC',
             ));
 
             $active = 0;
             while ($news_design->have_posts()):
                 $news_design->the_post();
-            ?>
+                ?>
 
-                <div class="carousel-item <?php echo ($active == 0) ? 'active' : ''; ?>">
-                    <?php
-                    if (has_post_thumbnail()) {
-                        the_post_thumbnail('photo-800X400', array('class' => 'd-block w-100 img-fluid'));
-                    } else { ?>
-                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg'; ?>"
-                            class="d-block w-100 img-fluid" alt="">
-                    <?php } ?>
+                <div class="carousel-item <?php echo ($active == 0) ? 'active' : ''; ?> position-relative">
 
-                    <div class="carousel-caption bg-dark bg-opacity-75 rounded">
-                        <h5><?php the_title(); ?></h5>
-                    </div>
+                    <a href="<?php the_permalink(); ?>" class="text-decoration-none stretched-link">
+
+                        <?php
+                        if (has_post_thumbnail()) {
+                            the_post_thumbnail('photo-800X400', array('class' => 'd-block w-100 img-fluid'));
+                        } else { ?>
+                            <img src="<?php echo get_template_directory_uri() . '/images/no-image-800X400.jpg'; ?>"
+                                class="d-block w-100 img-fluid" alt="">
+                        <?php } ?>
+
+                        <div class="carousel-caption bg-dark bg-opacity-75 rounded">
+                            <h5><?php the_title(); ?></h5>
+                        </div>
+                    </a>
+
                 </div>
 
-            <?php
+                <?php
                 $active++;
             endwhile;
             wp_reset_postdata();
@@ -454,7 +483,7 @@ get_template_part('includes/breadcrums');
 
         <?php
         $news_design = new Wp_Query(array(
-            'post_type' => 'fish',
+            'post_type' => $cpt_name,
             'posts_per_page' => 2,
             'offset' => 14,
             'order' => 'DESC',
@@ -464,21 +493,24 @@ get_template_part('includes/breadcrums');
             ?>
 
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100 position-relative">
 
-                    <?php
-                    if (has_post_thumbnail()) {
-                        the_post_thumbnail('photo-600X300', array('class' => 'card-img-top img-fluid'));
-                    } else { ?>
-                        <img src="<?php echo get_template_directory_uri() . '/images/no-image-600X300.jpg'; ?>"
-                            class="card-img-top img-fluid" alt="">
-                    <?php }
-                    ?>
+                    <a href="<?php the_permalink(); ?>" class="text-decoration-none stretched-link">
+                        <?php
+                        if (has_post_thumbnail()) {
+                            the_post_thumbnail('photo-600X300', array('class' => 'card-img-top img-fluid'));
+                        } else { ?>
+                            <img src="<?php echo get_template_directory_uri() . '/images/no-image-600X300.jpg'; ?>"
+                                class="card-img-top img-fluid" alt="">
+                        <?php }
+                        ?>
 
 
-                    <div class="card-body">
-                        <h5> <?php the_title(); ?> </h5>
-                    </div>
+                        <div class="card-body">
+                            <h5> <?php the_title(); ?> </h5>
+                        </div>
+
+                    </a>
                 </div>
             </div>
         <?php endwhile;
@@ -500,29 +532,29 @@ get_template_part('includes/breadcrums');
 
         <?php
         $timeline_news_sections = get_posts(array(
-            'post_type' => 'fish',
+            'post_type' => $cpt_name,
             'posts_per_page' => 2,
             'offset' => 12,
             'order' => 'DESC',
-            'fields'  => 'ids',
+            'fields' => 'ids',
             'no_found_rows' => true,
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
         ));
-        if ($timeline_news_sections){
-            foreach($timeline_news_sections as $timeline_news_section) { ?>
-       
-            <li class="mb-4 border-start border-3 ps-3">
+        if ($timeline_news_sections) {
+            foreach ($timeline_news_sections as $timeline_news_section) { ?>
 
-                <h6> <?php echo get_the_date('M j, Y', $timeline_news_section);?> </h6>
+                <li class="mb-4 border-start border-3 ps-3">
 
-                <h5> <a href="<?php echo esc_url(get_permalink($timeline_news_section));?>" class="text-decoration-none"> 
-                    <?php echo esc_html(get_the_title($timeline_news_section)); ?> 
-                </a> </h5>
-            </li>
+                    <h6> <?php echo get_the_date('M j, Y', $timeline_news_section); ?> </h6>
 
-        <?php  } 
-        } else {?>
+                    <h5> <a href="<?php echo esc_url(get_permalink($timeline_news_section)); ?>" class="text-decoration-none">
+                            <?php echo esc_html(get_the_title($timeline_news_section)); ?>
+                        </a> </h5>
+                </li>
+
+            <?php }
+        } else { ?>
 
             <li>No posts found.</li>
 
@@ -541,7 +573,7 @@ get_template_part('includes/breadcrums');
 
         <?php
         $news_design = new Wp_Query(array(
-            'post_type' => 'fish',
+            'post_type' => $cpt_name,
             'posts_per_page' => 3,
             'offset' => 9,
             'order' => 'DESC',
@@ -549,12 +581,40 @@ get_template_part('includes/breadcrums');
         while ($news_design->have_posts()):
             $news_design->the_post();
             ?>
-            <li class="border-bottom py-2"><a href="#" class="text-decoration-none"><?php the_title(); ?></a></li>
+            <li class="border-bottom py-2"><a href="<?php the_permalink(); ?>"
+                    class="text-decoration-none"><?php the_title(); ?></a></li>
         <?php endwhile;
         wp_reset_postdata(); ?>
 
     </ul>
 </section>
+
+
+
+
+<?php
+
+/**
+ * 
+
+<?php function introduce($name){?>
+
+    <div class="">
+        <p> <?php echo $name;?> is a Student. <?php echo $name;?>  is 20 years old. <?php echo $name;?>  lives in London. <?php echo $name;?>  is a Doctor.</p>
+    </div>
+
+<?php }?>
+
+<?php introduce('Kamal');?>
+<?php introduce('Jamal');?>
+
+* 
+ * 
+ */
+
+
+?>
+
 
 
 

@@ -18,8 +18,7 @@ get_template_part('includes/breadcrums');
             <h2><a href="#" class="text-decoration-none">বিশ্ব</a></h2>
             <div class="col-12">
                 <ul class="d-flex list-unstyled">
-                    <li class="px-2"><a href="#" class="text-decoration-none">ফিলিস্তিন-ইসরায়েল সংঘাত</a></li>
-                    <li class="px-2"><a href="#" class="text-decoration-none">ভারত</a></li>
+                    <li class="px-2"><a href="#" class="text-decoration-none">ফিলিস্তিন-ইসরায়েল সংঘাত</a></li><li class="px-2"><a href="#" class="text-decoration-none">ভারত</a></li>
                     <li class="px-2"><a href="#" class="text-decoration-none">পাকিস্তান</a></li>
                     <li class="px-2"><a href="#" class="text-decoration-none">চীন</a></li>
                     <li class="px-2"><a href="#" class="text-decoration-none">ফিলিস্তিন</a></li>
